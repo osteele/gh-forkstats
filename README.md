@@ -1,4 +1,5 @@
 # Forkmantle
+[![NPM version](http://img.shields.io/npm/v/forkmantle.svg?style=flat)](https://www.npmjs.com/package/forkmantle)
 
 `forkmantle` displays GitHub forks and their stats.
 
