@@ -1,6 +1,6 @@
 ## Features
 
-- [ ] find fork source
+- [ ] follow forks
 - [ ] fix sort by recency
 - [ ] option for different sort order
 - [ ] compute health summary

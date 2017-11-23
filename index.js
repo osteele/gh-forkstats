@@ -44,9 +44,12 @@ function comparator(fn) {
 
 function report(source) {
     const repos = [source, ...source.forks.nodes];
+    if (source.parent) {
+        repos.unshift(source.parent);
+    }
     repos.sort(comparator(r => new Date(r.pushedAt)));
     repos.sort(comparator(r => r.stargazers.totalCount));
-    const headers = ['Owner', 'Last Push  ', 'Stars', 'Issues', 'Pull Requests', 'Homepage'];
+    const headers = ['Owner', 'Last Push  ', 'Stars', 'Issues', 'Pull Requests', 'Forks', 'Homepage'];
     const data = [headers];
     function totalstr(count) {
         if (count.hasOwnProperty('totalCount')) {
@@ -55,7 +58,7 @@ function report(source) {
         return count > 0 ? count : '-';
     }
     for (let r of repos) {
-        data.push([r.nameWithOwner.split('/')[0], relativeDate(new Date(r.pushedAt)), totalstr(r.stargazers), totalstr(r.issues), totalstr(r.pullRequests), r.url])
+        data.push([r.nameWithOwner.split('/')[0], relativeDate(new Date(r.pushedAt)), totalstr(r.stargazers), totalstr(r.issues), totalstr(r.pullRequests), totalstr(r.forks), r.url])
     }
     const config = {
         border: { ...getBorderCharacters('void'), joinBody: '─' },
@@ -77,6 +80,14 @@ function report(source) {
     if (remaining > 0) {
         console.info(`...and ${remaining} more.`)
     }
+    if (source.parent) {
+        const additionalForks = source.parent.forks.totalCount - 1;
+        let suffix = '';
+        if (additionalForks > 0) {
+            suffix = `, which has ${additionalForks} additional forks (not shown)`;
+        }
+        console.info(`${source.nameWithOwner} is a fork of ${source.parent.nameWithOwner}${suffix}.`);
+    }
 }
 
 const usage = `Usage: ${process.argv[1]} REPO`;
@@ -93,15 +104,19 @@ const forksQuery = gql`
 query {
     repository(owner: "${repo_owner}", name: "${repo_name}") {
         ...repoParts
+        parent {
+            ...repoParts
+            forks { totalCount }
+        }
         forks(first:30, orderBy:{field: STARGAZERS, direction: DESC}) {
             totalCount
             nodes {
                 ...repoParts
+                forks { totalCount }
             }
         }
     }
 }
-
 fragment repoParts on Repository {
     issues { totalCount }
     stargazers { totalCount }
