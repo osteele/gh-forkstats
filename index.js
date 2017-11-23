@@ -7,6 +7,7 @@ import gql from 'graphql-tag';
 import { setContext } from 'apollo-link-context';
 import { table, getBorderCharacters } from 'table';
 import relativeDate from 'relative-date';
+import yargs from 'yargs';
 
 const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
 
@@ -14,6 +15,10 @@ function die(message) {
     console.error(message);
     process.exit(-1)
 }
+
+const argv = yargs
+    .usage('$0 owner/repo', 'Print info about forks')
+    .argv;
 
 if (!GITHUB_TOKEN) {
     die("Set GITHUB_TOKEN to a GitHub personal access token https://help.github.com/articles/creating-a-personal-access-token-for-the-command-line/")
@@ -90,11 +95,7 @@ function report(source) {
     }
 }
 
-const usage = `Usage: ${process.argv[1]} REPO`;
-const args = process.argv.slice(2)
-args.length == 1 || die(usage);
-
-const repo_nwo = args[0].replace(/^https:\/\/github\.com\//, '');
+const repo_nwo = argv['owner/repo'].replace(/^https:\/\/github\.com\//, '');
 repo_nwo.split('/').length == 2 || die(usage)
 
 const repo_owner = repo_nwo.split('/')[0];
