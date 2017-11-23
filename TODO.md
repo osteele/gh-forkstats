@@ -8,11 +8,6 @@
 - [ ] API w/ json output
 - [ ] create browser extension a la octotree
 
-## Docs
-
-- [ ] better example repo
-
-
 ## Code Quality
 
 - [ ] use babel async
