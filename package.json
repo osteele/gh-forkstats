@@ -1,6 +1,6 @@
 {
   "name": "forkmantle",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Display stats about a GitHub repo's forks",
   "main": "./distribution/index.js",
   "repository": "https://github.com/osteele/forkmantle",
