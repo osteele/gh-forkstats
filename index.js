@@ -34,8 +34,18 @@ const client = new ApolloClient({
     cache: new InMemoryCache(),
 });
 
+function comparator(fn) {
+    return (a, b) => {
+        const k1 = fn(a);
+        const k2 = fn(b);
+        return k1 < k2 ? 1 : k2 < k1 ? -1 : 0;
+    }
+}
+
 function report(source) {
     const repos = [source, ...source.forks.nodes];
+    repos.sort(comparator(r => new Date(r.pushedAt)));
+    repos.sort(comparator(r => r.stargazers.totalCount));
     const headers = ['Owner', 'Last Push  ', 'Stars', 'Issues', 'Pull Requests', 'Homepage'];
     const data = [headers];
     function totalstr(count) {
