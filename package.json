@@ -6,9 +6,10 @@
   "repository": "https://github.com/osteele/forkmantle",
   "author": "Oliver Steele",
   "license": "MIT",
-  "bin": {
-    "forkmantle": "distribution/index.js"
-  },
+  "bin": "distribution/index.js",
+  "files": [
+    "distribution/*"
+  ],
   "scripts": {
     "build": "babel index.js --out-dir distribution",
     "prepublish": "npm run build",

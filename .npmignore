@@ -1,3 +1,4 @@
 *.log
 index.js
-
+TODO.md
+yarn.lock
