@@ -8,5 +8,4 @@
 ## Code Quality
 
 - [ ] use babel async
-- [ ] use query fragment for source and fork attributes
 - [ ] replace string interpolation by query variables

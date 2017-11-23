@@ -82,24 +82,23 @@ const repo_name = repo_nwo.split('/')[1];
 const forksQuery = gql`
 query {
     repository(owner: "${repo_owner}", name: "${repo_name}") {
-        issues { totalCount }
-        stargazers { totalCount }
-        pullRequests { totalCount }
-        url
-        nameWithOwner
-        pushedAt
+        ...repoParts
         forks(first:30, orderBy:{field: STARGAZERS, direction: DESC}) {
             totalCount
             nodes {
-                issues { totalCount }
-                pullRequests { totalCount }
-                stargazers { totalCount }
-                url
-                nameWithOwner
-                pushedAt
+                ...repoParts
             }
         }
     }
+}
+
+fragment repoParts on Repository {
+    issues { totalCount }
+    stargazers { totalCount }
+    pullRequests { totalCount }
+    url
+    nameWithOwner
+    pushedAt
 }
 `;
 
