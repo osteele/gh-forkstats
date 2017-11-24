@@ -1,12 +1,14 @@
 #!/usr/bin/env node
-import fetch from 'node-fetch';
+
+import { getBorderCharacters, table } from 'table';
+
 import { ApolloClient } from 'apollo-client';
-import { createHttpLink } from 'apollo-link-http';
 import { InMemoryCache } from 'apollo-cache-inmemory';
+import { createHttpLink } from 'apollo-link-http';
+import fetch from 'node-fetch';
 import gql from 'graphql-tag';
-import { setContext } from 'apollo-link-context';
-import { table, getBorderCharacters } from 'table';
 import relativeDate from 'relative-date';
+import { setContext } from 'apollo-link-context';
 import yargs from 'yargs';
 
 const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
