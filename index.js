@@ -130,9 +130,21 @@ fragment repoParts on Repository {
 }
 `;
 
-client.query({
-    query: FORKS_QUERY,
-    variables: { repo_owner, repo_name },
-})
-    .then(({ data }) => report(data.repository))
-    .catch(error => die(error.message || error));
+async function query(repo_owner, repo_name) {
+    return client.query({
+        query: FORKS_QUERY,
+        variables: { repo_owner, repo_name },
+    })
+        .then(({ data }) => data);
+}
+
+async function main() {
+    try {
+        const data = await query(repo_owner, repo_name);
+        report(data.repository);
+    } catch (error) {
+        die(error.message || error);
+    }
+}
+
+main();

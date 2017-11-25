@@ -10,7 +10,6 @@
 
 ## Code Quality
 
-- [ ] use babel async
 - [ ] flow
 - [ ] lint
 - [ ] travis
