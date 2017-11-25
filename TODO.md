@@ -5,10 +5,10 @@
 - [ ] option for different sort order
 - [ ] compute health summary
 - [ ] sort by health
-- [ ] API w/ json output
 - [ ] create browser extension a la octotree
 
 ## Code Quality
 
+- [ ] tests
+- [ ] API docs
 - [ ] flow
-- [ ] travis
