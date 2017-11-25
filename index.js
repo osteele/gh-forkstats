@@ -127,12 +127,19 @@ fragment repoInfo on Repository {
 }
 `;
 
-async function query(repo_owner, repo_name) {
+class InvalidNameWithOwner extends Error { }
+
+export async function query(nwo) {
+    if (nwo.split('/').length !== 2) {
+        throw new InvalidNameWithOwner(`Invalid repository name/owner: ${nwo}`)
+    };
+    const repo_owner = nwo.split('/')[0];
+    const repo_name = nwo.split('/')[1];
     return client.query({
         query: FORKS_QUERY,
         variables: { repo_owner, repo_name },
     })
-        .then(({ data }) => data);
+        .then(({ data }) => data.repository);
 }
 
 async function main() {
@@ -140,17 +147,16 @@ async function main() {
     const argv = yargs
         .usage(`$0 ${NWO_KEY}`, 'Print info about forks')
         .argv;
-    const repo_nwo = argv[NWO_KEY].replace(/^https:\/\/github\.com\//, '');
-    repo_nwo.split('/').length == 2 || die(usage);
-    const repo_owner = repo_nwo.split('/')[0];
-    const repo_name = repo_nwo.split('/')[1];
+    const nwo = argv[NWO_KEY].replace(/^https:\/\/github\.com\//, '');
 
     try {
-        const data = await query(repo_owner, repo_name);
-        report(data.repository);
-    } catch (error) {
-        die(error.message || error);
+        const data = await query(nwo);
+        report(data);
+    } catch (e) {
+        die(e.message || e);
     }
 }
 
-main();
+if (require.main === module) {
+    main();
+}

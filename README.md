@@ -53,6 +53,17 @@ zhanglei             a month ago     -      -     -      -     https://github.co
 ...and 566 more.
 ```
 
+## API
+
+```javascript
+import { query } from 'forkmantle';
+
+query('urfave/cli')
+    .then(console.info(repo))
+```
+
+The `GITHUB_TOKEN` environment variable must be set when the module is imported.
+
 ## LICENSE
 
 MIT
