@@ -11,4 +11,6 @@
 ## Code Quality
 
 - [ ] use babel async
-- [ ] replace string interpolation by query variables
+- [ ] flow
+- [ ] lint
+- [ ] travis

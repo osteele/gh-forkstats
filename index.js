@@ -103,9 +103,9 @@ repo_nwo.split('/').length == 2 || die(usage)
 const repo_owner = repo_nwo.split('/')[0];
 const repo_name = repo_nwo.split('/')[1];
 
-const forksQuery = gql`
-query {
-    repository(owner: "${repo_owner}", name: "${repo_name}") {
+const FORKS_QUERY = gql`
+query ($repo_owner: String!, $repo_name: String!) {
+    repository(owner: $repo_owner, name: $repo_name) {
         ...repoParts
         parent {
             ...repoParts
@@ -131,7 +131,7 @@ fragment repoParts on Repository {
 `;
 
 client.query({
-    query: forksQuery,
+    query: FORKS_QUERY,
     variables: { repo_owner, repo_name },
 })
     .then(({ data }) => report(data.repository))
