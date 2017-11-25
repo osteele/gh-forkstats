@@ -15,11 +15,11 @@ const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
 
 function die(message) {
     console.error(message);
-    process.exit(-1)
+    process.exit(-1);
 }
 
 if (!GITHUB_TOKEN) {
-    die("Set GITHUB_TOKEN to a GitHub personal access token https://help.github.com/articles/creating-a-personal-access-token-for-the-command-line/")
+    die("Set GITHUB_TOKEN to a GitHub personal access token https://help.github.com/articles/creating-a-personal-access-token-for-the-command-line/");
 }
 
 const authLink = setContext((_, { headers }) => {
@@ -29,7 +29,7 @@ const authLink = setContext((_, { headers }) => {
             ...headers,
             authorization: token ? `Bearer ${token}` : null,
         }
-    }
+    };
 });
 
 const client = new ApolloClient({
@@ -49,7 +49,7 @@ function comparator(fn) {
             k2 = k2.totalCount;
         }
         return k1 < k2 ? 1 : k2 < k1 ? -1 : 0;
-    }
+    };
 }
 
 function report(source) {
@@ -61,14 +61,14 @@ function report(source) {
     repos.sort(comparator(r => r.stargazers));
     const headers = ['Owner', 'Last Push  ', 'Stars', 'Issues', 'Pull Requests', 'Forks', 'Homepage'];
     const data = [headers];
-    function totalstr(count) {
+    function totalStr(count) {
         if (count.hasOwnProperty('totalCount')) {
             count = count.totalCount;
         }
         return count > 0 ? count : '-';
     }
     for (let r of repos) {
-        data.push([r.nameWithOwner.split('/')[0], relativeDate(new Date(r.pushedAt)), totalstr(r.stargazers), totalstr(r.issues), totalstr(r.pullRequests), totalstr(r.forks), r.url])
+        data.push([r.nameWithOwner.split('/')[0], relativeDate(new Date(r.pushedAt)), totalStr(r.stargazers), totalStr(r.issues), totalStr(r.pullRequests), totalStr(r.forks), r.url]);
     }
     const config = {
         border: { ...getBorderCharacters('void'), joinBody: '─' },
@@ -82,13 +82,13 @@ function report(source) {
             3: { alignment: 'right' },
             4: { alignment: 'center', width: 10, wrapWord: true },
         },
-        drawHorizontalLine: (index) => index == 1,
+        drawHorizontalLine: (index) => index === 1,
     };
     const output = table(data, config);
     console.log(output);
     const remaining = source.forks.totalCount - source.forks.nodes.length;
     if (remaining > 0) {
-        console.info(`...and ${remaining} more.`)
+        console.info(`...and ${remaining} more.`);
     }
     if (source.parent) {
         const additionalForks = source.parent.forks.totalCount - 1;
@@ -101,8 +101,8 @@ function report(source) {
 }
 
 const FORKS_QUERY = gql`
-query ($repo_owner: String!, $repo_name: String!) {
-    repository(owner: $repo_owner, name: $repo_name) {
+query ($owner: String!, $name: String!) {
+    repository(owner: $owner, name: $name) {
         ...repoInfo
         parent {
             ...repoInfo
@@ -131,19 +131,19 @@ class InvalidNameWithOwner extends Error { }
 
 export async function query(nwo) {
     if (nwo.split('/').length !== 2) {
-        throw new InvalidNameWithOwner(`Invalid repository name/owner: ${nwo}`)
+        throw new InvalidNameWithOwner(`Invalid repository name/owner: ${nwo}`);
     };
-    const repo_owner = nwo.split('/')[0];
-    const repo_name = nwo.split('/')[1];
+    const owner = nwo.split('/')[0];
+    const name = nwo.split('/')[1];
     return client.query({
         query: FORKS_QUERY,
-        variables: { repo_owner, repo_name },
+        variables: { owner, name },
     })
         .then(({ data }) => data.repository);
 }
 
 async function main() {
-    const NWO_KEY = 'OWNER/REPO'
+    const NWO_KEY = 'OWNER/REPO';
     const argv = yargs
         .usage(`$0 ${NWO_KEY}`, 'Print info about forks')
         .argv;
