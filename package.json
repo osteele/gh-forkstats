@@ -14,7 +14,8 @@
     "build": "babel index.js --out-dir distribution",
     "lint": "eslint index.js",
     "prepublish": "npm run build",
-    "start": "babel-node index.js"
+    "start": "babel-node index.js",
+    "test": "jest"
   },
   "dependencies": {
     "apollo-client-preset": "^1.0.3",
@@ -32,7 +33,9 @@
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.0",
     "babel-eslint": "^8.0.2",
+    "babel-jest": "^21.2.0",
     "babel-plugin-syntax-async-functions": "^6.13.0",
     "babel-plugin-transform-async-to-module-method": "^6.24.1",
     "babel-plugin-transform-object-rest-spread": "^6.26.0",
@@ -42,6 +45,7 @@
     "eslint-plugin-import": "^2.8.0",
     "eslint-plugin-node": "^5.2.1",
     "eslint-plugin-promise": "^3.6.0",
-    "eslint-plugin-standard": "^3.0.1"
+    "eslint-plugin-standard": "^3.0.1",
+    "jest": "^21.2.1"
   }
 }

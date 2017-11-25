@@ -9,6 +9,6 @@
 
 ## Code Quality
 
-- [ ] tests
+- [ ] more tests
 - [ ] API docs
 - [ ] flow

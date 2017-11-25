@@ -18,7 +18,7 @@ function die(message) {
     process.exit(-1);
 }
 
-if (!GITHUB_TOKEN) {
+if (process.env.NODE_ENV !== 'test' && !GITHUB_TOKEN) {
     die("Set GITHUB_TOKEN to a GitHub personal access token https://help.github.com/articles/creating-a-personal-access-token-for-the-command-line/");
 }
 
@@ -40,7 +40,7 @@ const client = new ApolloClient({
 // Returns a function suitable for use in `sort` that sorts by a projection function.
 // If the function returns objects with a `totalCount` property, sort by this instead.
 // This is useful with GraphQL relationships.
-function comparator(fn) {
+export function comparator(fn) {
     return (a, b) => {
         let k1 = fn(a);
         let k2 = fn(b);
@@ -48,7 +48,7 @@ function comparator(fn) {
             k1 = k1.totalCount;
             k2 = k2.totalCount;
         }
-        return k1 < k2 ? 1 : k2 < k1 ? -1 : 0;
+        return k1 < k2 ? -1 : k2 < k1 ? 1 : 0;
     };
 }
 
@@ -59,6 +59,7 @@ function report(source) {
     }
     repos.sort(comparator(r => new Date(r.pushedAt)));
     repos.sort(comparator(r => r.stargazers));
+    repos.reverse();
     const headers = ['Owner', 'Last Push  ', 'Stars', 'Issues', 'Pull Requests', 'Forks', 'Homepage'];
     const data = [headers];
     function totalStr(count) {
