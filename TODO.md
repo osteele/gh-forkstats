@@ -11,5 +11,4 @@
 ## Code Quality
 
 - [ ] flow
-- [ ] lint
 - [ ] travis
