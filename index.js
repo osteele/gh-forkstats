@@ -18,10 +18,6 @@ function die(message) {
     process.exit(-1)
 }
 
-const argv = yargs
-    .usage('$0 owner/repo', 'Print info about forks')
-    .argv;
-
 if (!GITHUB_TOKEN) {
     die("Set GITHUB_TOKEN to a GitHub personal access token https://help.github.com/articles/creating-a-personal-access-token-for-the-command-line/")
 }
@@ -97,12 +93,6 @@ function report(source) {
     }
 }
 
-const repo_nwo = argv['owner/repo'].replace(/^https:\/\/github\.com\//, '');
-repo_nwo.split('/').length == 2 || die(usage)
-
-const repo_owner = repo_nwo.split('/')[0];
-const repo_name = repo_nwo.split('/')[1];
-
 const FORKS_QUERY = gql`
 query ($repo_owner: String!, $repo_name: String!) {
     repository(owner: $repo_owner, name: $repo_name) {
@@ -139,6 +129,14 @@ async function query(repo_owner, repo_name) {
 }
 
 async function main() {
+    const argv = yargs
+        .usage('$0 owner/repo', 'Print info about forks')
+        .argv;
+    const repo_nwo = argv['owner/repo'].replace(/^https:\/\/github\.com\//, '');
+    repo_nwo.split('/').length == 2 || die(usage);
+    const repo_owner = repo_nwo.split('/')[0];
+    const repo_name = repo_nwo.split('/')[1];
+
     try {
         const data = await query(repo_owner, repo_name);
         report(data.repository);
