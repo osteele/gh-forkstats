@@ -37,10 +37,17 @@ const client = new ApolloClient({
     cache: new InMemoryCache(),
 });
 
+// Returns a function suitable for use in `sort` that sorts by a projection function.
+// If the function returns objects with a `totalCount` property, sort by this instead.
+// This is useful with GraphQL relationships.
 function comparator(fn) {
     return (a, b) => {
-        const k1 = fn(a);
-        const k2 = fn(b);
+        let k1 = fn(a);
+        let k2 = fn(b);
+        if (k1.hasOwnProperty('totalCount')) {
+            k1 = k1.totalCount;
+            k2 = k2.totalCount;
+        }
         return k1 < k2 ? 1 : k2 < k1 ? -1 : 0;
     }
 }
@@ -51,7 +58,7 @@ function report(source) {
         repos.unshift(source.parent);
     }
     repos.sort(comparator(r => new Date(r.pushedAt)));
-    repos.sort(comparator(r => r.stargazers.totalCount));
+    repos.sort(comparator(r => r.stargazers));
     const headers = ['Owner', 'Last Push  ', 'Stars', 'Issues', 'Pull Requests', 'Forks', 'Homepage'];
     const data = [headers];
     function totalstr(count) {
@@ -96,21 +103,21 @@ function report(source) {
 const FORKS_QUERY = gql`
 query ($repo_owner: String!, $repo_name: String!) {
     repository(owner: $repo_owner, name: $repo_name) {
-        ...repoParts
+        ...repoInfo
         parent {
-            ...repoParts
+            ...repoInfo
             forks { totalCount }
         }
         forks(first:30, orderBy:{field: STARGAZERS, direction: DESC}) {
             totalCount
             nodes {
-                ...repoParts
+                ...repoInfo
                 forks { totalCount }
             }
         }
     }
 }
-fragment repoParts on Repository {
+fragment repoInfo on Repository {
     issues { totalCount }
     stargazers { totalCount }
     pullRequests { totalCount }
@@ -129,10 +136,11 @@ async function query(repo_owner, repo_name) {
 }
 
 async function main() {
+    const NWO_KEY = 'OWNER/REPO'
     const argv = yargs
-        .usage('$0 owner/repo', 'Print info about forks')
+        .usage(`$0 ${NWO_KEY}`, 'Print info about forks')
         .argv;
-    const repo_nwo = argv['owner/repo'].replace(/^https:\/\/github\.com\//, '');
+    const repo_nwo = argv[NWO_KEY].replace(/^https:\/\/github\.com\//, '');
     repo_nwo.split('/').length == 2 || die(usage);
     const repo_owner = repo_nwo.split('/')[0];
     const repo_name = repo_nwo.split('/')[1];
