@@ -2,19 +2,19 @@
   "name": "gh-forkstats",
   "version": "0.0.4",
   "description": "Display stats about a GitHub repo's forks",
-  "main": "./distribution/index.js",
   "repository": "osteele/gh-forkstats",
   "author": "Oliver Steele",
   "license": "MIT",
-  "bin": "distribution/index.js",
+  "bin": "dist/index.js",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "files": [
-    "distribution/*"
+    "dist/*"
   ],
   "scripts": {
-    "build": "babel index.js --out-dir distribution",
+    "build": "tsc --declaration",
     "lint": "eslint index.js",
-    "prepublish": "npm github-run build",
-    "start": "babel-node index.js",
+    "cli": "ts-node index.ts",
     "test": "jest",
     "test-ci": "jest --coverage && cat ./coverage/lcov.info | coveralls"
   },
@@ -23,24 +23,19 @@
     "apollo-link": "^1.0.3",
     "apollo-link-context": "^1.0.1",
     "apollo-link-http": "^1.2.0",
-    "babel-polyfill": "^6.26.0",
-    "bluebird": "^3.5.1",
     "graphql": "^0.11.7",
     "graphql-tag": "^2.5.0",
-    "node-fetch": "^1.7.",
+    "node-fetch": "^2.6.2",
     "relative-date": "^1.1.3",
     "table": "^4.0.2",
     "yargs": "^10.0.3"
   },
   "devDependencies": {
-    "babel-cli": "^6.26.0",
-    "babel-core": "^6.26.0",
-    "babel-eslint": "^8.0.2",
-    "babel-jest": "^21.2.0",
-    "babel-plugin-syntax-async-functions": "^6.13.0",
-    "babel-plugin-transform-async-to-module-method": "^6.24.1",
-    "babel-plugin-transform-object-rest-spread": "^6.26.0",
-    "babel-preset-es2015": "^6.24.1",
+    "@tsconfig/node14": "^1.0.1",
+    "@types/jest": "^27.0.1",
+    "@types/node-fetch": "^2.5.12",
+    "@types/table": "^6.3.2",
+    "@types/yargs": "^17.0.2",
     "coveralls": "^3.0.0",
     "eslint": "^4.11.0",
     "eslint-config-standard": "^10.2.1",
@@ -48,6 +43,17 @@
     "eslint-plugin-node": "^5.2.1",
     "eslint-plugin-promise": "^3.6.0",
     "eslint-plugin-standard": "^3.0.1",
-    "jest": "^21.2.1"
+    "jest": "^27.2.0",
+    "ts-jest": "^27.0.5",
+    "ts-node": "^10.2.1",
+    "typescript": "^4.4.3"
+  },
+  "jest": {
+    "preset": "ts-jest",
+    "testEnvironment": "node",
+    "testMatch": [
+      "**/tests/**/*.ts",
+      "**/index.test.ts"
+    ]
   }
 }
