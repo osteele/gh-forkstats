@@ -1,7 +1,7 @@
 # GitHub Fork Stats
 
 [![NPM version](http://img.shields.io/npm/v/gh-forkstats.svg?style=flat)](https://www.npmjs.com/package/gh-forkstats)
-[![Build Status](https://travis-ci.org/osteele/gh-forkstats.svg?branch=master)](https://travis-ci.org/osteele/gh-forkstats)
+[![CI workflow](https://github.com/osteele/gh-forkstats/actions/workflows/ci.yml/badge.svg)](https://github.com/osteele/gh-forkstats/actions/workflows/ci.yml)
 
 `gh-forkstats` displays GitHub forks and their stats.
 
