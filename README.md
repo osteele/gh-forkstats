@@ -1,20 +1,23 @@
-# Forkmantle
-[![NPM version](http://img.shields.io/npm/v/forkmantle.svg?style=flat)](https://www.npmjs.com/package/forkmantle)
-[![Build Status](https://travis-ci.org/osteele/forkmantle.svg?branch=master)](https://travis-ci.org/osteele/forkmantle)
+# GitHub Fork Stats
 
-`forkmantle` displays GitHub forks and their stats.
+[![NPM version](http://img.shields.io/npm/v/gh-forkstats.svg?style=flat)](https://www.npmjs.com/package/gh-forkstats)
+[![Build Status](https://travis-ci.org/osteele/gh-forkstats.svg?branch=master)](https://travis-ci.org/osteele/gh-forkstats)
+
+`gh-forkstats` displays GitHub forks and their stats.
 
 It's intended to help identify the living successors to abandoned GitHub repos.
 
 ## Install
 
-1. Install: `npm install -g forkmantle`
-2. Set the `GITHUB_TOKEN` environment variable to a [GitHub personal access token](https://help.github.com/articles/creating-a-personal-access-token-for-the-command-line/).
-(If you've been using other GitHub command-line tools, you may already have this.)
+1. Install: `npm install -g gh-forkstats`
+2. Set the `GITHUB_TOKEN` environment variable to a [GitHub personal access
+   token](https://help.github.com/articles/creating-a-personal-access-token-for-the-command-line/).
+   (If you've been using other GitHub command-line tools, you may already have
+   this.)
 
 ## Usage
 
-```
+```shell
 $ babel-node index.js urfave/cli
 Owner                Last Push   Stars Issues    Pull     Forks Homepage
                                                Requests
@@ -56,8 +59,8 @@ zhanglei             a month ago     -      -     -      -     https://github.co
 
 ## API
 
-```javascript
-import { query } from 'forkmantle';
+```js
+import { query } from 'github-fork-status';
 
 query('urfave/cli')
     .then(console.info(repo))
