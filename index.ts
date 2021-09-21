@@ -2,15 +2,19 @@
 
 /// <reference path = "ambient.d.ts" />
 
-import { getBorderCharacters, table } from 'table';
-import { ApolloClient } from 'apollo-client';
 import { InMemoryCache } from 'apollo-cache-inmemory';
-import { createHttpLink } from 'apollo-link-http';
-import fetch from 'node-fetch';
-import gql from 'graphql-tag';
-import relativeDate from 'relative-date';
+import { ApolloClient } from 'apollo-client';
 import { setContext } from 'apollo-link-context';
+import { createHttpLink } from 'apollo-link-http';
+import gql from 'graphql-tag';
+import fetch from 'node-fetch';
+import relativeDate from 'relative-date';
+import { getBorderCharacters, table } from 'table';
+import updateNotifier from 'update-notifier';
 import yargs from 'yargs';
+
+const pkg = require('../package.json');
+updateNotifier({ pkg }).notify();
 
 const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
 

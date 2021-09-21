@@ -2,4 +2,5 @@
 
 ## [0.4.0]
 
-- Rename from forkmantle -> github-fork-stats
+- Rename from forkmantle -> gh-forkstats
+- Added update-notifier
