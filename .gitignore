@@ -1,5 +1,5 @@
 *.log
 node_modules
 coverage
-distribution
-package-lock.json
+dist
+yarn.lock
